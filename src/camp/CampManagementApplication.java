@@ -186,7 +186,7 @@ public class CampManagementApplication {
     private static void displayScoreView() {
         boolean flag = true;
         while (flag) {
-            System.out.println("===================================");
+            System.out.println("====================================");
             System.out.println("점수 관리 실행 중...");
             System.out.println("1. 수강생의 과목별 시험 회차 및 점수 등록");
             System.out.println("2. 수강생의 과목별 회차 점수 수정");
