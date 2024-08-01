@@ -22,6 +22,14 @@ public class Student {
         return studentName;
     }
 
+    public List<String> getSubjectList() {
+        return subjectList;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
     // Setter
     // 수강생의 상태 수정 setter 메서드
     public void setStudentStatus(String status) { this.status = status; }
