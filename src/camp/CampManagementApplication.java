@@ -180,7 +180,11 @@ public class CampManagementApplication {
     private static void inquireStudent() {
         System.out.println("\n수강생 목록을 조회합니다...");
         for (Student student : studentStore) {
-            System.out.println(student.getStudentId() + " " +  student.getStudentName());
+            System.out.println(
+                    student.getStudentId() +
+                    " " +  student.getStudentName() +
+                    " 상태 : " + student.getStudentStatus()
+            );
         }
         System.out.println("\n수강생 목록 조회 성공!");
     }
