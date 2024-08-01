@@ -156,7 +156,7 @@ public class CampManagementApplication {
             switch (input) {
                 case 1 -> createStudent(); // 수강생 등록
                 case 2 -> inquireStudent(); // 수강생 목록 조회
-                case 3 -> getUpdateStudentStatus(); // 수강생 상태 수정
+                case 3 -> updateStudentStatus(); // 수강생 상태 수정
                 case 4 -> flag = false; // 메인 화면 이동
                 default -> {
                     System.out.println("잘못된 입력입니다.\n메인 화면 이동...");
@@ -167,7 +167,7 @@ public class CampManagementApplication {
     }
 
     // 수강생 상태 수정
-    private static void getUpdateStudentStatus() {
+    private static void updateStudentStatus() {
         String studentId = getStudentId(); // 관리할 수강생 고유 번호
         System.out.print("수정할 수강생의 상태를 입력: ");
         String newStatus = sc.next();
