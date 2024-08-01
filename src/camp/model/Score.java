@@ -17,4 +17,23 @@ public class Score {
         return scoreId;
     }
 
+    public String getStudentId() {
+        return studentId;
+    }
+
+    public String getSubjectId() {
+        return subjectId;
+    }
+
+    public int getRound() {
+        return round;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public char getGrade() {
+        return grade;
+    }
 }

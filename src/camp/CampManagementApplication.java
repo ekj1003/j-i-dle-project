@@ -4,9 +4,7 @@ import camp.model.Score;
 import camp.model.Student;
 import camp.model.Subject;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Notification
@@ -246,8 +244,26 @@ public class CampManagementApplication {
     // 수강생의 특정 과목 회차별 등급 조회
     private static void inquireRoundGradeBySubject() {
         String studentId = getStudentId(); // 관리할 수강생 고유 번호
+
         // 기능 구현 (조회할 특정 과목)
-        System.out.println("회차별 등급을 조회합니다...");
+        System.out.print("조회할 과목의 번호를 입력하시오...");
+        String subjectId = sc.next();
+        Subject subject = subjectStore.stream().filter(s -> s.getSubjectId().equals(subjectId)).findFirst().get();
+
+        System.out.println(subject.getSubjectName() + " 과목 회차별 등급을 조회합니다...");
+        System.out.println("====================================");
+
+        List<Score> scoreList = new ArrayList<>(scoreStore.stream()
+                .filter(s -> s.getStudentId().equals(studentId) && s.getSubjectId().equals(subjectId))
+                .toList());
+
+        scoreList.sort(Comparator.comparingInt(Score::getRound));
+
+        for (Score score : scoreList) {
+            System.out.println("회차 = " + score.getRound());
+            System.out.println("등급 = " + score.getGrade());
+            System.out.println("====================================");
+        }
         // 기능 구현
         System.out.println("\n등급 조회 성공!");
     }
