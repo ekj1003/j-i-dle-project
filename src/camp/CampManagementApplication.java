@@ -4,9 +4,8 @@ import camp.model.Score;
 import camp.model.Student;
 import camp.model.Subject;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Notification
@@ -21,6 +20,7 @@ public class CampManagementApplication {
     private static List<Student> studentStore;
     private static List<Subject> subjectStore;
     private static List<Score> scoreStore;
+
 
     // 과목 타입
     private static String SUBJECT_TYPE_MANDATORY = "MANDATORY";
@@ -154,7 +154,30 @@ public class CampManagementApplication {
 
             switch (input) {
                 case 1 -> createStudent(); // 수강생 등록
-                case 2 -> inquireStudent(); // 수강생 목록 조회
+                case 2 -> displayStudentInquiry(); // 수강생 목록 조회
+                case 3 -> flag = false; // 메인 화면 이동
+                default -> {
+                    System.out.println("잘못된 입력입니다.\n메인 화면 이동...");
+                    flag = false;
+                }
+            }
+        }
+    }
+    //수강생 목록 조회 메뉴
+    private static void displayStudentInquiry() {
+        boolean flag = true;
+        while (flag) {
+            System.out.println("===================================");
+            System.out.println("수강생 목록 조회 메뉴 실행 중...");
+            System.out.println("1. 수강생 전체 정보 조회");
+            System.out.println("2. 상태별 수강생 조회");
+            System.out.println("3. 이전 화면으로 이동");
+            System.out.print("관리 항목을 선택하세요...");
+            int input = sc.nextInt();
+
+            switch (input) {
+                case 1 -> inquireStudent(); // 수강생 등록
+                case 2 -> inquireStudentByStatus(); // 수강생 목록 조회
                 case 3 -> flag = false; // 메인 화면 이동
                 default -> {
                     System.out.println("잘못된 입력입니다.\n메인 화면 이동...");
@@ -183,10 +206,30 @@ public class CampManagementApplication {
             System.out.println(
                     student.getStudentId() +
                     " " +  student.getStudentName() +
-                    " 상태 : " + student.getStudentStatus()
+                    " 상태 : " + student.getStatus()
             );
         }
         System.out.println("\n수강생 목록 조회 성공!");
+    }
+    //상태별 수강생 목록 조회
+    private static void inquireStudentByStatus() {
+        System.out.println("\n 상태별 수강생 목록을 조회합니다...");
+        filterAndPrintStudentsByStatus("Red");
+        filterAndPrintStudentsByStatus("Green");
+        filterAndPrintStudentsByStatus("Yellow");
+        System.out.println("\n상태별 수강생 목록 조회 성공!");
+    }
+
+    //상태별로 필터링해주는 메서드
+    public static void filterAndPrintStudentsByStatus (String status) {
+        List<Student> filteredStudents = studentStore.stream()
+                .filter(student -> status.equals(student.getStatus()))
+                .collect(Collectors.toList());
+
+        System.out.println("\n상태 : " + status + " 인 학생들");
+        for (Student student : filteredStudents) {
+            System.out.println(student.getStudentId() + " " +  student.getStudentName() + student.getStatus());
+        }
     }
 
     private static void displayScoreView() {
