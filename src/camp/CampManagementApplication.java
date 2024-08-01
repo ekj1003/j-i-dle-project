@@ -236,6 +236,10 @@ public class CampManagementApplication {
         System.out.println("점수 입력: ");
         int score = sc.nextInt();
 
+        // 점수 등록
+        Score scoreEntry = new Score(sequence(INDEX_TYPE_SCORE), studentId, subjectId, round, score);
+        scoreStore.add(scoreEntry);
+
         System.out.println("\n점수 등록 성공!");
     }
 
