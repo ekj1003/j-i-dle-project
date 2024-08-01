@@ -36,4 +36,10 @@ public class Score {
     public char getGrade() {
         return grade;
     }
+
+    // Setter
+    // Score를 수정하는 함수
+    public void setScore(int newScore) {
+        this.score = newScore;
+    }
 }
