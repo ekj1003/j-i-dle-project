@@ -6,6 +6,7 @@ public class Score {
     private String subjectId;
     private int round;
     private int score;
+    private String grade;
 
     // 필드 초기화 생성자
     public Score(String scoreId, String studentId, String subjectId, int round, int score) {
@@ -14,6 +15,7 @@ public class Score {
         this.subjectId = subjectId;
         this.round = round;
         this.score = score;
+        this.grade = grade;
     }
 
     // Getter, Setter
@@ -35,6 +37,10 @@ public class Score {
 
     public int getScore() {
         return score;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade;
     }
 }
 
