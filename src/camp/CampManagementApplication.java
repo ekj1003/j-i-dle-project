@@ -7,6 +7,7 @@ import camp.model.Subject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 /**
  * Notification
@@ -170,6 +171,10 @@ public class CampManagementApplication {
         System.out.print("수강생 이름 입력: ");
         String studentName = sc.next();
         // 기능 구현 (필수 과목, 선택 과목)
+        // 필수 과목 선택
+        // 선택 과목 선택
+
+
 
         Student student = new Student(sequence(INDEX_TYPE_STUDENT), studentName); // 수강생 인스턴스 생성 예시 코드
         // 기능 구현
@@ -215,9 +220,22 @@ public class CampManagementApplication {
 
     // 수강생의 과목별 시험 회차 및 점수 등록
     private static void createScore() {
-        String studentId = getStudentId(); // 관리할 수강생 고유 번호
-        System.out.println("시험 점수를 등록합니다...");
+        System.out.println("과목별 시험 회차 및 점수를 등록합니다...");
         // 기능 구현
+        String studentId = getStudentId(); // 관리할 수강생 고유 번호
+
+        // 과목 입력
+        System.out.println("과목 입력: ");
+        String subjectId = sc.next();
+
+        // 회차 입력
+        System.out.println("시험 회차 입력(1~10): ");
+        int round = sc.nextInt();
+
+        // 점수 입력
+        System.out.println("점수 입력: ");
+        int score = sc.nextInt();
+
         System.out.println("\n점수 등록 성공!");
     }
 
