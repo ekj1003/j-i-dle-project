@@ -351,7 +351,7 @@ public class CampManagementApplication {
     }
     //수강생이 듣는 과목을 (전공,선택)에 따라 리스트로 반환
     public static List<Subject> listStudentSubjectByType(Student student , String type) {
-        List<Subject> subjectList = student.getSubjectList();
+        List<Subject> subjectList = student.getSubjectListTypeSubject();
         return subjectList.stream()
                 .filter(s -> type.equals(s.getSubjectType())).toList();
     }
