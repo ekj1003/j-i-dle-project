@@ -395,22 +395,7 @@ public class CampManagementApplication {
     private static char getAvgGrade(List<Integer> scoreList) {
         int scoreSum = scoreList.stream().reduce(0, Integer::sum);
         int avgSum = scoreSum / scoreList.size();
-        char avgGrade;
-
-        if (avgSum >= 95) {
-            avgGrade = 'A';
-        } else if (avgSum >= 90) {
-            avgGrade = 'B';
-        } else if (avgSum >= 80) {
-            avgGrade = 'C';
-        } else if (avgSum >= 70) {
-            avgGrade = 'D';
-        } else if (avgSum >= 60) {
-            avgGrade = 'F';
-        } else {
-            avgGrade = 'N';
-        }
-        return avgGrade;
+        return getGrade(avgSum, SUBJECT_TYPE_MANDATORY);
     }
     // 수강생의 과목별 평균 등급 조회 최종 메서드
     private static void inquireAVGGradeBySubject() {
