@@ -8,8 +8,11 @@ public class Score {
     private int score;
     private char grade;
 
-    public Score(String seq) {
-        this.scoreId = seq;
+    public Score(String studentId, String subjectId, int round, int score) {
+        this.studentId = studentId;
+        this.subjectId = subjectId;
+        this.round = round;
+        this.score = score;
     }
 
     // Getter
