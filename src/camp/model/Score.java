@@ -10,7 +10,7 @@ public class Score {
 
     // 필드 초기화 생성자
     public Score(String scoreId, String studentId, String subjectId, int round, int score) {
-        this.scoreId = scoreId;
+        this.scoreId = scoreId; // 변수 seq -> scoreId로 변경
         this.studentId = studentId;
         this.subjectId = subjectId;
         this.round = round;
