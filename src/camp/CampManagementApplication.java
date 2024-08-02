@@ -212,7 +212,7 @@ public class CampManagementApplication {
     }
 
     //수강생이 듣는 과목을 (필수,선택)으로 나눠서 출력
-    public static void printStudentSubjects (Student student) {
+    private static void printStudentSubjects (Student student) {
         System.out.print(" [수강 과목:(필)");
         for (Subject subject : listStudentSubjectByType(student, "MANDATORY")) {
             System.out.printf("%s,",subject.getSubjectName());
@@ -234,7 +234,7 @@ public class CampManagementApplication {
     }
 
     //상태별로 필터링해주는 메서드
-    public static void filterAndPrintStudentsByStatus (String status) {
+    private static void filterAndPrintStudentsByStatus (String status) {
         List<Student> filteredStudents = studentStore.stream()
                 .filter(student -> status.equals(student.getStatus()))
                 .toList();
@@ -278,7 +278,7 @@ public class CampManagementApplication {
     }
 
     // 수강생의 ID로 학생 객체 리턴
-    public static Student findStudent(String input) {
+    private static Student findStudent(String input) {
         return studentStore.stream()
                 .filter(student -> student.getStudentId().equals(input))
                 .findFirst().orElse(null);
@@ -311,7 +311,7 @@ public class CampManagementApplication {
     }
 
     // 수강생의 과목별 평균 등급 조회 최종 메서드
-    public static void inquireAVGGradeBySubject() {
+    private static void inquireAVGGradeBySubject() {
 
         String input = getStudentId();
         Student who = findStudent(input);
@@ -320,7 +320,7 @@ public class CampManagementApplication {
     }
 
     // 수강생 과목별 평균 등급 조회 코어 메서드
-    public static void studentAverageGradeBySubject(Student student) {
+    private static void studentAverageGradeBySubject(Student student) {
         System.out.println( student.getStudentName()+"님의 과목별 평균 등급은 다음과 같습니다..");
         /* *
          필수과목, 선택과목 등급 산정 기준이 다름
@@ -336,7 +336,7 @@ public class CampManagementApplication {
 
     }
     //수강생의 해당 과목 평균 등급을 반환
-    public static char filterAndReturnAverageGradeByStudentandSubject(String studentId, String subjectId, String subjectTypeLabel) {
+    private static char filterAndReturnAverageGradeByStudentandSubject(String studentId, String subjectId, String subjectTypeLabel) {
         List<Score> filteredScore = scoreStore.stream()
                 .filter(score -> studentId.equals(score.getStudentId()) && subjectId.equals(score.getSubjectId()))
                 .toList();
@@ -350,13 +350,13 @@ public class CampManagementApplication {
         return getGrade(average,subjectTypeLabel);
     }
     //수강생이 듣는 과목을 (전공,선택)에 따라 리스트로 반환
-    public static List<Subject> listStudentSubjectByType(Student student , String type) {
+    private static List<Subject> listStudentSubjectByType(Student student , String type) {
         List<Subject> subjectList = student.getSubjectListTypeSubject();
         return subjectList.stream()
                 .filter(s -> type.equals(s.getSubjectType())).toList();
     }
     //수강생이 듣는 과목별로 평균등급을 출력해주는 메서드
-    public static void printAVGGradebySubject (Student student, String subjectTypeLabel) {
+    private static void printAVGGradebySubject (Student student, String subjectTypeLabel) {
         for (Subject subject : listStudentSubjectByType(student, subjectTypeLabel)) {
             String stid = student.getStudentId();
             String sName = subject.getSubjectName();
