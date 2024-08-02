@@ -203,14 +203,28 @@ public class CampManagementApplication {
     private static void inquireStudent() {
         System.out.println("\n수강생 목록을 조회합니다...");
         for (Student student : studentStore) {
-            System.out.println(
+            System.out.print(
                     student.getStudentId() +
                             " " +  student.getStudentName() +
-                            " [상태:" + student.getStatus() + "]"
-            );
+                            " [상태:" + student.getStatus() + "]");
+            printStudentSubjects(student);
         }
         System.out.println("\n수강생 목록 조회 성공!");
     }
+
+    //수강생이 듣는 과목을 (필수,선택)으로 나눠서 출력
+    public static void printStudentSubjects (Student student) {
+        System.out.print(" [수강 과목:(필)");
+        for (Subject subject : listStudentSubjectByType(student, "MANDATORY")) {
+            System.out.printf("%s,",subject.getSubjectName());
+        }
+        System.out.print("(선)");
+        for (Subject subject : listStudentSubjectByType(student, "CHOICE")) {
+            System.out.printf("%s,",subject.getSubjectName());
+        }
+        System.out.print("]");
+    }
+
     //상태별 수강생 목록 조회
     private static void inquireStudentByStatus() {
         System.out.println("\n 상태별 수강생 목록을 조회합니다...");
@@ -228,7 +242,7 @@ public class CampManagementApplication {
 
         System.out.println("\n상태 : " + status + " 인 학생들");
         for (Student student : filteredStudents) {
-            System.out.println(student.getStudentId() + " " +  student.getStudentName() + "" + student.getStatus());
+            System.out.println(student.getStudentId() + " " +  student.getStudentName());
         }
     }
 
@@ -313,6 +327,8 @@ public class CampManagementApplication {
          필수과목, 선택과목 등급 산정 기준이 다름
          필수과목 평균 + 선택과목 평균 내서 붙여버리기
          */
+
+        //여기서 동작하지는 않지만, 같은 student 객체를 쓰기 위해 여기에 넣었습니다.
         listStudentSubjectByType(student, "MANDATORY");
         listStudentSubjectByType(student, "CHOICE");
 
