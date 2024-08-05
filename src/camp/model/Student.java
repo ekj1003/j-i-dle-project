@@ -45,4 +45,7 @@ public class Student {
     // 수강생의 상태 수정 setter 메서드
     public void setStudentStatus(String status) { this.status = status; }
 
+    public void setSubjectList(List<String> subjectIds){ this.subjectList = subjectIds;}
+
+    public void setStudentName(String StudentName) {this.studentName = studentName; }
 }
