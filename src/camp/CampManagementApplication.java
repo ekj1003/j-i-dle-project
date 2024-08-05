@@ -148,14 +148,17 @@ public class CampManagementApplication {
             System.out.println("수강생 관리 실행 중...");
             System.out.println("1. 수강생 등록");
             System.out.println("2. 수강생 목록 조회");
-            System.out.println("3. 메인 화면 이동");
+            System.out.println("3. 수강생 삭제"); // 수강생 삭제 추가
+            System.out.println("4. 메인 화면 이동");
             System.out.print("관리 항목을 선택하세요...");
             int input = sc.nextInt();
 
             switch (input) {
                 case 1 -> createStudent(); // 수강생 등록
                 case 2 -> inquireStudent(); // 수강생 목록 조회
-                case 3 -> flag = false; // 메인 화면 이동
+                case 3 -> deleteStudent(); //수강생 삭제
+                case 4 -> displayScoreView(); // 점수 관리 메뉴로 이동
+                case 5 -> flag = false; // 메인 화면 이동
                 default -> {
                     System.out.println("잘못된 입력입니다.\n메인 화면 이동...");
                     flag = false;
@@ -181,6 +184,18 @@ public class CampManagementApplication {
         System.out.println("\n수강생 목록을 조회합니다...");
         // 기능 구현
         System.out.println("\n수강생 목록 조회 성공!");
+    }
+
+    // 수강생 삭제
+    private static void deleteStudent() {
+        System.out.println("\n수강생을 삭제합니다...");
+        String studentId = getStudentId();
+        boolean removed = studentStore.removeIf(student -> student.getStudentId().equals(studentId));
+        if (removed) {
+            System.out.println("수강생 삭제 완료");
+        } else {
+            System.out.println("해당 ID를 가진 수강생이 없습니다.");
+        }
     }
 
     private static void displayScoreView() {
