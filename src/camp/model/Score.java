@@ -6,22 +6,16 @@ public class Score {
     private String subjectId;
     private int round;
     private int score;
-    private String grade;
+    private char grade;
 
-    // 필드 초기화 생성자
-    public Score(String scoreId, String studentId, String subjectId, int round, int score) {
-        this.scoreId = scoreId; // 변수 seq -> scoreId로 변경
+    public Score(String studentId, String subjectId, int round, int score) {
         this.studentId = studentId;
         this.subjectId = subjectId;
         this.round = round;
         this.score = score;
-        this.grade = grade;
     }
 
-    // Getter, Setter
-    public String getScoreId() {
-        return scoreId;
-    }
+    // Getter
 
     public String getStudentId() {
         return studentId;
@@ -39,9 +33,13 @@ public class Score {
         return score;
     }
 
-    public void setGrade(String grade) {
-        this.grade = grade;
+    public char getGrade() {
+        return grade;
+    }
+
+    // Setter
+    // Score를 수정하는 함수
+    public void setScore(int newScore) {
+        this.score = newScore;
     }
 }
-
-
