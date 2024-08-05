@@ -147,7 +147,8 @@ public class CampManagementApplication {
             System.out.println("1. 수강생 등록");
             System.out.println("2. 수강생 목록 조회 메뉴");
             System.out.println("3. 수강생 상태 수정"); // 추가 기능) 수강생 상태 수정
-            System.out.println("4. 메인 화면 이동");
+            System.out.println("4. 수강생 삭제"); // 수강생 삭제 추가
+            System.out.println("5. 메인 화면 이동");
             System.out.print("관리 항목을 선택하세요...");
             int input = sc.nextInt();
 
@@ -155,7 +156,8 @@ public class CampManagementApplication {
                 case 1 -> createStudent(); // 수강생 등록
                 case 2 -> displayStudentInquiry(); // 수강생 목록 조회
                 case 3 -> updateStudentStatus(); // 수강생 상태 수정
-                case 4 -> flag = false; // 메인 화면 이동
+                case 4 -> deleteStudent(); //수강생 삭제
+                case 5 -> flag = false; // 메인 화면 이동
                 default -> {
                     System.out.println("잘못된 입력입니다.\n메인 화면 이동...");
                     flag = false;
@@ -490,4 +492,24 @@ public class CampManagementApplication {
 
     }
 
+<<<<<<< HEAD
+=======
+    // 수강생 삭제
+    private static void deleteStudent() {
+        System.out.println("\n수강생을 삭제합니다...");
+        String studentId = getStudentId();
+
+        // 학생 삭제
+        boolean studentRemoved = studentStore.removeIf(student -> student.getStudentId().equals(studentId));
+
+        // 관련 점수 삭제
+        scoreStore.removeIf(score -> score.getStudentId().equals(studentId));
+
+        if (studentRemoved) {
+            System.out.println("수강생 삭제 완료");
+        } else {
+            System.out.println("해당 ID를 가진 수강생이 없습니다.");
+        }
+    }
+>>>>>>> gc-student_delete
 }
