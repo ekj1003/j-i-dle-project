@@ -492,8 +492,6 @@ public class CampManagementApplication {
 
     }
 
-<<<<<<< HEAD
-=======
     // 수강생 삭제
     private static void deleteStudent() {
         System.out.println("\n수강생을 삭제합니다...");
@@ -511,5 +509,4 @@ public class CampManagementApplication {
             System.out.println("해당 ID를 가진 수강생이 없습니다.");
         }
     }
->>>>>>> gc-student_delete
 }
