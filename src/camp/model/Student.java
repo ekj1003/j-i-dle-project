@@ -17,7 +17,8 @@ public class Student {
         this.subjectListTypeSubject = new ArrayList<>();
     }
 
-    // Getter
+
+        // Getter
     public String getStudentId() {
         return studentId;
     }
@@ -37,6 +38,8 @@ public class Student {
     public String getStatus() {
         return status;
     }
+
+
 
     // Setter
     // 수강생의 상태 수정 setter 메서드
