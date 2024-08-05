@@ -7,14 +7,12 @@ public class Student {
     private String studentId; // 수강생 ID
     private String studentName; // 수강생 이름
     private List<String> subjectList;
-    private List<Subject> subjectListTypeSubject; // 수강 과목ID 목록
     private String status = "Green"; // 상태
 
 
     public Student(String seq, String studentName) {
         this.studentId = seq;
         this.studentName = studentName;
-        this.subjectListTypeSubject = new ArrayList<>();
     }
 
 
@@ -29,10 +27,6 @@ public class Student {
 
     public List<String> getSubjectList() {
         return subjectList;
-    }
-
-    public List<Subject> getSubjectListTypeSubject() {
-        return subjectListTypeSubject;
     }
 
     public String getStatus() {
