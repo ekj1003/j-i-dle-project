@@ -36,11 +36,13 @@ public class CampManagementApplication {
     // 스캐너
     private static Scanner sc = new Scanner(System.in);
 
+
+
     public static void main(String[] args) {
 
         setInitData();
 
-        StudentManagement.setData(studentStore, subjectStore, INDEX_TYPE_STUDENT);
+        StudentManagement.setData(studentStore, subjectStore);
 
         try {
             displayMainView();
