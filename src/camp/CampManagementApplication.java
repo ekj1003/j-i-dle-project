@@ -40,7 +40,7 @@ public class CampManagementApplication {
 
         setInitData();
 
-        StudentManagement.setData(studentStore, subjectStore, INDEX_TYPE_STUDENT);
+        StudentManagement.setData(studentStore, subjectStore);
 
         try {
             displayMainView();

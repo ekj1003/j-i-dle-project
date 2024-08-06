@@ -14,7 +14,7 @@ public class StudentManagement {
 
 
     // 데이터 설정
-    public static void setData(List<Student> students, List<Subject> subjects, String prefix) {
+    public static void setData(List<Student> students, List<Subject> subjects) {
         studentStore = students;
         subjectStore = subjects;
 
