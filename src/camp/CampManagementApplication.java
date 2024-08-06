@@ -489,7 +489,9 @@ public class CampManagementApplication {
 
             for (String subjectId : subjectList) {
                 Subject subject = subjectStore.stream()
-                        .filter(s -> s.getSubjectId().equals(subjectId)).findFirst().get();
+                        .filter(s -> s.getSubjectId().equals(subjectId)).findFirst().orElse(null);
+
+                if (subject == null) continue;
 
                 if (subject.getSubjectType().equals(SUBJECT_TYPE_MANDATORY)) {
                     List<Integer> scoreList = scoreStore.stream().filter(s -> s.getStudentId().equals(student.getStudentId()) &&
@@ -506,7 +508,12 @@ public class CampManagementApplication {
     // 점수 리스트를 받아 평균 등급을 반환
     private static char getAvgGrade(List<Integer> scoreList) {
         int scoreSum = scoreList.stream().reduce(0, Integer::sum);
-        int avgSum = scoreSum / scoreList.size();
+        int avgSum;
+        if (scoreList.isEmpty()) {
+            avgSum = 0;
+        } else {
+            avgSum = scoreSum / scoreList.size();
+        }
         return getGrade(avgSum, SUBJECT_TYPE_MANDATORY);
     }
     // 수강생의 과목별 평균 등급 조회 최종 메서드
