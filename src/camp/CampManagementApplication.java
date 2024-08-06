@@ -410,8 +410,16 @@ public class CampManagementApplication {
             return;
         }
 
+        // 과목 유형 찾기
+        Subject subject = findSubjectById(subjectId);
+        if (subject == null) {
+            System.out.println("유효하지 않은 과목입니다.");
+            return;
+        }
+        String subjectType = subject.getSubjectType();
+
         // 점수 등록
-        Score scoreEntry = new Score(studentId, subjectId, round, score);
+        Score scoreEntry = new Score(studentId, subjectId, round, score, subjectType);
         scoreStore.add(scoreEntry);
         System.out.println("\n점수 등록 성공!");
     }
