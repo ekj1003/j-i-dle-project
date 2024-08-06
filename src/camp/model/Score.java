@@ -16,9 +16,6 @@ public class Score {
     }
 
     // Getter
-    public String getScoreId() {
-        return scoreId;
-    }
 
     public String getStudentId() {
         return studentId;

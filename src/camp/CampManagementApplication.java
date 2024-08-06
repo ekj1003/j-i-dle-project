@@ -5,6 +5,7 @@ import camp.model.Student;
 import camp.model.Subject;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Notification
@@ -253,7 +254,7 @@ public class CampManagementApplication {
         System.out.println("수강생 ID : " + student.getStudentId());
         System.out.println("수강생 상태 : " + status);
         System.out.println("수강목록 : " + mandatorysubject + " " + choicesubject);
-        System.out.println("수강목록 ID : " + subjectIds);
+        System.out.println("수강목록 ID : " + student.getSubjectList());
         System.out.println("수강생 등록 성공!\n");
     }
 
@@ -304,7 +305,7 @@ public class CampManagementApplication {
         for (Subject subject : listStudentSubjectByType(student, "CHOICE")) {
             System.out.printf("%s,",subject.getSubjectName());
         }
-        System.out.print("]");
+        System.out.print("]\n");
     }
 
     //상태별 수강생 목록 조회
@@ -363,17 +364,39 @@ public class CampManagementApplication {
     }
 
     // 수강생의 ID로 학생 객체 리턴
-    private static Student findStudent(String input) {
+    private static Student findStudent(String studentId) {
         return studentStore.stream()
-                .filter(student -> student.getStudentId().equals(input))
+                .filter(student -> student.getStudentId().equals(studentId))
                 .findFirst().orElse(null);
     }
 
-    // 수강생의 과목별 시험 회차 및 점수 등록
+    //수강생이 듣는 과목ID로 과목 객체 리턴
+    private static Subject findSubjectById(String subjectId) {
+        Subject foundSubject = subjectStore.stream()
+                .filter(subject -> subject.getSubjectId().equals(subjectId)).findFirst().orElse(null);
+        return foundSubject;
+    }
+
+        // 수강생의 과목별 시험 회차 및 점수 등록
     private static void createScore() {
         String studentId = getStudentId(); // 관리할 수강생 고유 번호
         System.out.println("시험 점수를 등록합니다...");
-        // 기능 구현
+
+        // 과목 입력
+        System.out.println("과목 입력: ");
+        String subjectId = sc.next();
+
+        // 회차 입력
+        System.out.println("시험 회차 입력(1~10): ");
+        int round = sc.nextInt();
+
+        // 점수 입력
+        System.out.println("점수 입력: ");
+        int score = sc.nextInt();
+
+        // 점수 등록
+        Score scoreEntry = new Score(studentId, subjectId, round, score);
+        scoreStore.add(scoreEntry);
         System.out.println("\n점수 등록 성공!");
     }
 
@@ -508,7 +531,11 @@ public class CampManagementApplication {
     }
     //수강생이 듣는 과목을 (전공,선택)에 따라 리스트로 반환
     private static List<Subject> listStudentSubjectByType(Student student , String type) {
-        List<Subject> subjectList = student.getSubjectListTypeSubject();
+        List<Subject> subjectList = new ArrayList<>();
+        for (String subjectId : student.getSubjectList()) {
+            subjectList.add(findSubjectById(subjectId));
+        }
+
         return subjectList.stream()
                 .filter(s -> type.equals(s.getSubjectType())).toList();
     }
