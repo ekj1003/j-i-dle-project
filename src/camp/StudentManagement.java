@@ -11,13 +11,13 @@ public class StudentManagement {
 
     private static List<Student> studentStore;
     private static List<Subject> subjectStore;
-    private static String sequencePrefix;
+
 
     // 데이터 설정
     public static void setData(List<Student> students, List<Subject> subjects, String prefix) {
         studentStore = students;
         subjectStore = subjects;
-        sequencePrefix = prefix;
+
     }
 
     public static void createStudent() {
