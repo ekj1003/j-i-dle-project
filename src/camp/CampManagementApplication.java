@@ -35,6 +35,7 @@ public class CampManagementApplication {
 
     // 스캐너
     private static Scanner sc = new Scanner(System.in);
+    private static ScoreRegistrar scoreRegistrar = new ScoreRegistrar(sc);
 
     public static void main(String[] args) {
 
@@ -305,50 +306,11 @@ public class CampManagementApplication {
         return foundSubject;
     }
 
-        // 수강생의 과목별 시험 회차 및 점수 등록
+    // 수강생의 과목별 시험 회차 및 점수 등록
     private static void createScore() {
         String studentId = getStudentId(); // 관리할 수강생 고유 번호
-        System.out.println("시험 점수를 등록합니다...");
-
-        // 과목 입력
-        String subjectId;
-        while (true) {
-            System.out.println("과목 입력: ");
-            subjectId = sc.next();
-            if (subjectId.isEmpty()) {
-                System.out.println("과목을 다시 입력해주세요.");
-            } else {
-                break;
-            }
-        }
-        // 회차 입력
-        System.out.println("시험 회차 입력(1~10): ");
-        int round = sc.nextInt();
-        if (round < 1 || round > 10) {
-            System.out.println("회차는 1부터 10까지 입니다.");
-            return;
-        }
-
-        // 점수 입력
-        System.out.println("점수 입력: ");
-        int score = sc.nextInt();
-        if (score < 1 || score > 100) {
-            System.out.println("점수는 0부터 100까지 입니다.");
-            return;
-        }
-
-        // 과목 유형 찾기
-        Subject subject = findSubjectById(subjectId);
-        if (subject == null) {
-            System.out.println("유효하지 않은 과목입니다.");
-            return;
-        }
-        String subjectType = subject.getSubjectType();
-
-        // 점수 등록
-        Score scoreEntry = new Score(studentId, subjectId, round, score, subjectType);
-        scoreStore.add(scoreEntry);
-        System.out.println("\n점수 등록 성공!");
+        // 점수 등록 위임
+        scoreRegistrar.createScore(studentId, subjectStore, scoreStore);
     }
 
     // 수강생의 과목별 회차 점수 수정
