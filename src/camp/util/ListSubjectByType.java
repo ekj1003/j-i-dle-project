@@ -6,6 +6,8 @@ import camp.model.Subject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static camp.util.FindSubjectById.findSubjectById;
+
 public class ListSubjectByType {
     public static List<Subject> listStudentSubjectByType(Student student, String subjectType) {
         List<Subject> subjectList = new ArrayList<>();
