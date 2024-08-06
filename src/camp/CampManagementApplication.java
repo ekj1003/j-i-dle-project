@@ -5,7 +5,7 @@ import camp.model.Student;
 import camp.model.Subject;
 
 import java.util.*;
-import java.util.stream.Collectors;
+
 
 /**
  * Notification
@@ -37,7 +37,11 @@ public class CampManagementApplication {
     private static Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) {
+
         setInitData();
+
+        StudentManagement.setData(studentStore, subjectStore, INDEX_TYPE_STUDENT);
+
         try {
             displayMainView();
         } catch (Exception e) {
@@ -154,7 +158,7 @@ public class CampManagementApplication {
             int input = sc.nextInt();
 
             switch (input) {
-                case 1 -> createStudent(); // 수강생 등록
+                case 1 -> StudentManagement.createStudent(); // 수강생 등록
                 case 2 -> displayStudentInquiry(); // 수강생 목록 조회
                 case 3 -> updateStudentStatus(); // 수강생 상태 수정
                 case 4 -> deleteStudent(); //수강생 삭제
@@ -167,6 +171,7 @@ public class CampManagementApplication {
         }
     }
 
+
     // 수강생 상태 수정
     private static void updateStudentStatus() {
         String studentId = getStudentId(); // 관리할 수강생 고유 번호
@@ -178,86 +183,9 @@ public class CampManagementApplication {
         System.out.println("수강생 상태 수정 성공!\n");
     }
 
-    // 수강생 등록
-    private static void createStudent() {
-        System.out.println("\n수강생을 등록합니다...");
-        System.out.print("수강생 이름 입력: ");
-        String studentName = sc.next();
-
-
-        System.out.println("좋음 : Green");
-        System.out.println("중간 : Yellow");
-        System.out.println("나쁨 : Red");
-        System.out.println("수강생의 상태를 입력해주세요 : ");
-        String status = sc.next();
-
-        sc.nextLine(); // 입력 버퍼 비우기
-
-        // 기능 구현 (필수 과목, 선택 과목)
-        String mandatorysubject;
-        while (true) {
-            System.out.println("필수과목 최소 3개 이상 입력해주세요(,띄어쓰기로 구분)");
-            System.out.println("Java, 객체지향, Spring, JPA, MySQL");
-            System.out.print("필수과목 입력 : ");
-            mandatorysubject = sc.nextLine();
-            // 간단한 유효성 검사 (최소 3개 입력 여부 확인)
-            if (mandatorysubject.split(", ").length >= 3) {
-                break;
-            } else {
-                System.out.println("필수 과목은 최소 3개 이상 입력해야 합니다. 다시 입력해주세요.");
-            }
-        }
-        String choicesubject;
-        while (true) {
-            System.out.println("선택과목 최소 2개 이상 입력해주세요(,띄어쓰기로 구분)");
-            System.out.println("디자인 패턴, Spring Security, Redis, MongoDB");
-            System.out.print("선택과목 입력 : ");
-            choicesubject = sc.nextLine();
-            // 간단한 유효성 검사 (최소 2개 입력 여부 확인)
-            if (choicesubject.split(", ").length >= 2) {
-                break;
-            } else {
-                System.out.println("선택 과목은 최소 2개 이상 입력해야 합니다. 다시 입력해주세요.");
-            }
-        }
-
-        Student student = new Student(sequence(INDEX_TYPE_STUDENT), studentName); // 수강생 인스턴스 생성 예시 코드
-
-        // 기능 구현
-        List<String> subjectIds = new ArrayList<>();
-        for (String subjectName : mandatorysubject.split(", ")) {
-            Subject subject = subjectStore.stream()
-                    .filter(s -> s.getSubjectName().equalsIgnoreCase(subjectName))
-                    .findFirst().orElse(null);
-            if (subject != null) {
-                subjectIds.add(subject.getSubjectId());
-            }
-        }
-
-        for (String subjectName : choicesubject.split(", ")) {
-            Subject subject = subjectStore.stream()
-                    .filter(s -> s.getSubjectName().equalsIgnoreCase(subjectName))
-                    .findFirst().orElse(null);
-            if (subject != null) {
-                subjectIds.add(subject.getSubjectId());
-            }
-        }
-
-        student.setStudentStatus(status);
-        student.setSubjectList(subjectIds);
-
-
-        studentStore.add(student); // 학생 저장
-
-
-        System.out.println("수강생 이름 : " + student.getStudentName());
-        System.out.println("수강생 ID : " + student.getStudentId());
-        System.out.println("수강생 상태 : " + status);
-        System.out.println("수강목록 : " + mandatorysubject + ", " + choicesubject);
-        System.out.println("수강목록 ID : " + student.getSubjectList());
-        System.out.println("수강생 등록 성공!\n");
+    public static String generateStudentId() {
+        return INDEX_TYPE_STUDENT + (++studentIndex);
     }
-
     //수강생 목록 조회 메뉴
     private static void displayStudentInquiry() {
         boolean flag = true;
@@ -377,7 +305,7 @@ public class CampManagementApplication {
         return foundSubject;
     }
 
-        // 수강생의 과목별 시험 회차 및 점수 등록
+    // 수강생의 과목별 시험 회차 및 점수 등록
     private static void createScore() {
         String studentId = getStudentId(); // 관리할 수강생 고유 번호
         System.out.println("시험 점수를 등록합니다...");
@@ -409,8 +337,16 @@ public class CampManagementApplication {
             return;
         }
 
+        // 과목 유형 찾기
+        Subject subject = findSubjectById(subjectId);
+        if (subject == null) {
+            System.out.println("유효하지 않은 과목입니다.");
+            return;
+        }
+        String subjectType = subject.getSubjectType();
+
         // 점수 등록
-        Score scoreEntry = new Score(studentId, subjectId, round, score);
+        Score scoreEntry = new Score(studentId, subjectId, round, score, subjectType);
         scoreStore.add(scoreEntry);
         System.out.println("\n점수 등록 성공!");
     }
@@ -485,7 +421,9 @@ public class CampManagementApplication {
 
             for (String subjectId : subjectList) {
                 Subject subject = subjectStore.stream()
-                        .filter(s -> s.getSubjectId().equals(subjectId)).findFirst().get();
+                        .filter(s -> s.getSubjectId().equals(subjectId)).findFirst().orElse(null);
+
+                if (subject == null) continue;
 
                 if (subject.getSubjectType().equals(SUBJECT_TYPE_MANDATORY)) {
                     List<Integer> scoreList = scoreStore.stream().filter(s -> s.getStudentId().equals(student.getStudentId()) &&
@@ -502,7 +440,12 @@ public class CampManagementApplication {
     // 점수 리스트를 받아 평균 등급을 반환
     private static char getAvgGrade(List<Integer> scoreList) {
         int scoreSum = scoreList.stream().reduce(0, Integer::sum);
-        int avgSum = scoreSum / scoreList.size();
+        int avgSum;
+        if (scoreList.isEmpty()) {
+            avgSum = 0;
+        } else {
+            avgSum = scoreSum / scoreList.size();
+        }
         return getGrade(avgSum, SUBJECT_TYPE_MANDATORY);
     }
     // 수강생의 과목별 평균 등급 조회 최종 메서드
