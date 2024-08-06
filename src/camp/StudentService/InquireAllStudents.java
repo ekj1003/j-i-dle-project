@@ -18,11 +18,11 @@ public class InquireAllStudents {
             //상태
             System.out.print("[상태:" + student.getStatus() + "] ");
             //수강 과목
-            System.out.print("[수강 과목:(필)");
+            System.out.print("[수강 과목:(필):");
             for (Subject subject : listStudentSubjectByType(student, "MANDATORY")) {
                 System.out.printf("%s,",subject.getSubjectName());
             }
-            System.out.print("(선)");
+            System.out.print("(선):");
             for (Subject subject : listStudentSubjectByType(student, "CHOICE")) {
                 System.out.printf("%s,",subject.getSubjectName());
             }
