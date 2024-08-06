@@ -11,13 +11,13 @@ public class StudentManagement {
 
     private static List<Student> studentStore;
     private static List<Subject> subjectStore;
-    private static String sequencePrefix;
+
 
     // 데이터 설정
     public static void setData(List<Student> students, List<Subject> subjects, String prefix) {
         studentStore = students;
         subjectStore = subjects;
-        sequencePrefix = prefix;
+
     }
 
     public static void createStudent() {
@@ -64,7 +64,7 @@ public class StudentManagement {
             }
         }
 
-        Student student = new Student(sequencePrefix, studentName); // 수강생 인스턴스 생성 예시 코드
+        Student student = new Student(CampManagementApplication.generateStudentId(), studentName); // 수강생 인스턴스 생성 예시 코드
 
         // 기능 구현
         List<String> subjectIds = new ArrayList<>();
