@@ -208,12 +208,12 @@ public class CampManagementApplication {
         // 기능 구현 (필수 과목, 선택 과목)
         String mandatorysubject;
         while (true) {
-            System.out.println("필수과목 최소 3개 이상 입력해주세요(띄어쓰기로 구분)");
+            System.out.println("필수과목 최소 3개 이상 입력해주세요(,띄어쓰기로 구분)");
             System.out.println("Java, 객체지향, Spring, JPA, MySQL");
             System.out.print("필수과목 입력 : ");
             mandatorysubject = sc.nextLine();
             // 간단한 유효성 검사 (최소 3개 입력 여부 확인)
-            if (mandatorysubject.split(" ").length >= 3) {
+            if (mandatorysubject.split(", ").length >= 3) {
                 break;
             } else {
                 System.out.println("필수 과목은 최소 3개 이상 입력해야 합니다. 다시 입력해주세요.");
@@ -221,12 +221,12 @@ public class CampManagementApplication {
         }
         String choicesubject;
         while (true) {
-            System.out.println("선택과목 최소 2개 이상 입력해주세요(띄어쓰기로 구분)");
-            System.out.println("디자인 패턴, SpringSecurity, Redis, MongoDB");
+            System.out.println("선택과목 최소 2개 이상 입력해주세요(,띄어쓰기로 구분)");
+            System.out.println("디자인 패턴, Spring Security, Redis, MongoDB");
             System.out.print("선택과목 입력 : ");
             choicesubject = sc.nextLine();
             // 간단한 유효성 검사 (최소 2개 입력 여부 확인)
-            if (choicesubject.split(" ").length >= 2) {
+            if (choicesubject.split(", ").length >= 2) {
                 break;
             } else {
                 System.out.println("선택 과목은 최소 2개 이상 입력해야 합니다. 다시 입력해주세요.");
@@ -237,7 +237,7 @@ public class CampManagementApplication {
 
         // 기능 구현
         List<String> subjectIds = new ArrayList<>();
-        for (String subjectName : mandatorysubject.split(" ")) {
+        for (String subjectName : mandatorysubject.split(", ")) {
             Subject subject = subjectStore.stream()
                     .filter(s -> s.getSubjectName().equalsIgnoreCase(subjectName))
                     .findFirst().orElse(null);
@@ -246,7 +246,7 @@ public class CampManagementApplication {
             }
         }
 
-        for (String subjectName : choicesubject.split(" ")) {
+        for (String subjectName : choicesubject.split(", ")) {
             Subject subject = subjectStore.stream()
                     .filter(s -> s.getSubjectName().equalsIgnoreCase(subjectName))
                     .findFirst().orElse(null);
@@ -265,7 +265,7 @@ public class CampManagementApplication {
         System.out.println("수강생 이름 : " + student.getStudentName());
         System.out.println("수강생 ID : " + student.getStudentId());
         System.out.println("수강생 상태 : " + status);
-        System.out.println("수강목록 : " + mandatorysubject + " " + choicesubject);
+        System.out.println("수강목록 : " + mandatorysubject + ", " + choicesubject);
         System.out.println("수강목록 ID : " + student.getSubjectList());
         System.out.println("수강생 등록 성공!\n");
     }
@@ -501,7 +501,9 @@ public class CampManagementApplication {
 
             for (String subjectId : subjectList) {
                 Subject subject = subjectStore.stream()
-                        .filter(s -> s.getSubjectId().equals(subjectId)).findFirst().get();
+                        .filter(s -> s.getSubjectId().equals(subjectId)).findFirst().orElse(null);
+
+                if (subject == null) continue;
 
                 if (subject.getSubjectType().equals(SUBJECT_TYPE_MANDATORY)) {
                     List<Integer> scoreList = scoreStore.stream().filter(s -> s.getStudentId().equals(student.getStudentId()) &&
@@ -518,7 +520,12 @@ public class CampManagementApplication {
     // 점수 리스트를 받아 평균 등급을 반환
     public static char getAvgGrade(List<Integer> scoreList) {
         int scoreSum = scoreList.stream().reduce(0, Integer::sum);
-        int avgSum = scoreSum / scoreList.size();
+        int avgSum;
+        if (scoreList.isEmpty()) {
+            avgSum = 0;
+        } else {
+            avgSum = scoreSum / scoreList.size();
+        }
         return getGrade(avgSum, SUBJECT_TYPE_MANDATORY);
     }
     // 수강생의 과목별 평균 등급 조회 최종 메서드
