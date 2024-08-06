@@ -545,7 +545,7 @@ public class CampManagementApplication {
         for (Score score : filteredScore) {
             result+=score.getScore();
         }
-        average = result/10;
+        average = result/filteredScore.size();
         return getGrade(average,subjectTypeLabel);
     }
     //수강생이 듣는 과목을 (전공,선택)에 따라 리스트로 반환
