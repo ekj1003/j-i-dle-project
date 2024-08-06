@@ -509,19 +509,9 @@ public class CampManagementApplication {
 
     // 수강생 삭제
     private static void deleteStudent() {
-        System.out.println("\n수강생을 삭제합니다...");
-        String studentId = getStudentId();
-
-        // 학생 삭제
-        boolean studentRemoved = studentStore.removeIf(student -> student.getStudentId().equals(studentId));
-
-        // 관련 점수 삭제
-        scoreStore.removeIf(score -> score.getStudentId().equals(studentId));
-
-        if (studentRemoved) {
-            System.out.println("수강생 삭제 완료");
-        } else {
-            System.out.println("해당 ID를 가진 수강생이 없습니다.");
-        }
+        System.out.print("삭제할 수강생의 ID를 입력하세요: ");
+        String studentId = sc.next();
+        DeleteStudent deleteStudentManager = new DeleteStudent(studentStore, scoreStore);
+        deleteStudentManager.deleteStudent(studentId);
     }
 }
