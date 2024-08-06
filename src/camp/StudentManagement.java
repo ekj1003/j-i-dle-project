@@ -64,7 +64,7 @@ public class StudentManagement {
             }
         }
 
-        Student student = new Student(sequencePrefix, studentName); // 수강생 인스턴스 생성 예시 코드
+        Student student = new Student(CampManagementApplication.generateStudentId(), studentName); // 수강생 인스턴스 생성 예시 코드
 
         // 기능 구현
         List<String> subjectIds = new ArrayList<>();
