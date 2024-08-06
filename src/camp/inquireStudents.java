@@ -9,7 +9,7 @@ public class inquireStudents {
     //수강생 전체 목록 조회
     public static void inquireStudent() {
         System.out.println("\n수강생 목록을 조회합니다...");
-        for (Student student : CampManagementApplication.studentStore) {
+        for (Student student : Store.studentStore) {
             System.out.print(
                     student.getStudentId() +
                             " " +  student.getStudentName() +
@@ -43,7 +43,7 @@ public class inquireStudents {
 
     //상태별로 필터링해주는 메서드
     public static void filterAndPrintStudentsByStatus (String status) {
-        List<Student> filteredStudents = CampManagementApplication.studentStore.stream()
+        List<Student> filteredStudents = Store.studentStore.stream()
                 .filter(student -> status.equals(student.getStatus()))
                 .toList();
 
