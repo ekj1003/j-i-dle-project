@@ -12,12 +12,17 @@ public class AvgGrade {
                 .filter(score -> studentId.equals(score.getStudentId()) && subjectId.equals(score.getSubjectId()))
                 .toList();
         double result = 0;
-        double average = 0;
+        double average;
 
         for (Score score : filteredScore) {
             result += score.getScore();
         }
-        average = result / filteredScore.size();
-        return GetGrade.getGrade(average, subjectTypeLabel);
+        if(!filteredScore.isEmpty()) {
+            average = result / filteredScore.size();
+            return GetGrade.getGrade(average, subjectTypeLabel);
+        } else{
+            return 'N';
+        }
+
     }
 }
