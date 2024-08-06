@@ -17,10 +17,10 @@ public class AvgGrade {
         for (Score score : filteredScore) {
             result += score.getScore();
         }
-        if(!filteredScore.isEmpty()) {
+        if (!filteredScore.isEmpty()) {
             average = result / filteredScore.size();
-            return GetGrade.getGrade(average, subjectTypeLabel);
-        } else{
+            return GetGrade.getGradeByScore(average, subjectTypeLabel);
+        } else {
             return 'N';
         }
 

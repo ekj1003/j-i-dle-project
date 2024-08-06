@@ -13,6 +13,8 @@ import camp.util.GetStudentId;
 
 import java.util.*;
 
+import static camp.util.FindSubjectById.findSubjectById;
+
 
 /**
  * Notification
@@ -45,6 +47,7 @@ public class CampManagementApplication {
 
     public static void main(String[] args) {
         setInitData();
+        TestDb.Dbadd();
         try {
             displayMainView();
         } catch (Exception e) {
@@ -452,7 +455,7 @@ public class CampManagementApplication {
     public static char getAvgGrade(List<Integer> scoreList) {
         int scoreSum = scoreList.stream().reduce(0, Integer::sum);
         int avgSum = scoreSum / scoreList.size();
-        return GetGrade.getGrade(avgSum, SUBJECT_TYPE_MANDATORY);
+        return GetGrade.getGradeByScore(avgSum, SUBJECT_TYPE_MANDATORY);
     }
 
     // 수강생 삭제

@@ -9,6 +9,8 @@ import java.util.List;
 import static camp.util.FindSubjectById.findSubjectById;
 
 public class ListSubjectByType {
+    //(필수,선택)별로 과목 리스트 생성
+    //String subjectType은 "MANDATORY" 혹은 "CHOICE"
     public static List<Subject> listStudentSubjectByType(Student student, String subjectType) {
         List<Subject> subjectList = new ArrayList<>();
 

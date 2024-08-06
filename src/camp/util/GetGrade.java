@@ -3,7 +3,7 @@ package camp.util;
 import java.util.Objects;
 
 public class GetGrade {
-    public static char getGrade(double result, String subjectTypeLabel) {
+    public static char getGradeByScore(double result, String subjectTypeLabel) {
         char Grade = 'N';
         if (Objects.equals(subjectTypeLabel, "MANDATORY")) {
             if (result >= 95) {
