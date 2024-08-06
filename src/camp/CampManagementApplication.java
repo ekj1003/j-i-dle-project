@@ -384,16 +384,31 @@ public class CampManagementApplication {
         System.out.println("시험 점수를 등록합니다...");
 
         // 과목 입력
-        System.out.println("과목 입력: ");
-        String subjectId = sc.next();
-
+        String subjectId;
+        while (true) {
+            System.out.println("과목 입력: ");
+            subjectId = sc.next();
+            if (subjectId.isEmpty()) {
+                System.out.println("과목을 다시 입력해주세요.");
+            } else {
+                break;
+            }
+        }
         // 회차 입력
         System.out.println("시험 회차 입력(1~10): ");
         int round = sc.nextInt();
+        if (round < 1 || round > 10) {
+            System.out.println("회차는 1부터 10까지 입니다.");
+            return;
+        }
 
         // 점수 입력
         System.out.println("점수 입력: ");
         int score = sc.nextInt();
+        if (score < 1 || score > 100) {
+            System.out.println("점수는 0부터 100까지 입니다.");
+            return;
+        }
 
         // 점수 등록
         Score scoreEntry = new Score(studentId, subjectId, round, score);
