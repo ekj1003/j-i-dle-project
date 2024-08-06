@@ -1,7 +1,7 @@
 package camp.model;
 
-import java.util.ArrayList;
 import java.util.List;
+
 
 public class Student {
     private String studentId; // 수강생 ID
@@ -10,10 +10,13 @@ public class Student {
     private String status = "Green"; // 상태
 
 
+
     public Student(String seq, String studentName) {
         this.studentId = seq;
         this.studentName = studentName;
     }
+
+
 
 
     // Getter
