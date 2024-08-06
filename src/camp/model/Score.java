@@ -7,21 +7,33 @@ public class Score {
     private int round;
     private int score;
     private String grade; // 등급 추가
+    private String subjectType; // 과목 유형 추가
 
-    public Score(String studentId, String subjectId, int round, int score) {
+    public Score(String studentId, String subjectId, int round, int score, String subjectType) {
         this.studentId = studentId;
         this.subjectId = subjectId;
         this.round = round;
         this.score = score;
-        this.grade = calculateGrade(score);
+        this.subjectType = subjectType;
+        this.grade = calculateGrade(score, subjectType);
     }
 
-    private String calculateGrade(int score) {
-        if (score >= 90) return "A";
-        if (score >= 80) return "B";
-        if (score >= 70) return "C";
-        if (score >= 60) return "D";
-        return "F";
+    private String calculateGrade(int score, String subjectType) {
+        if (subjectType.equals("MANDATORY")) {
+            if (score >= 95) return "A";
+            if (score >= 90) return "B";
+            if (score >= 80) return "C";
+            if (score >= 70) return "D";
+            if (score >= 60) return "F";
+            return "N";
+        } else { // 선택과목(CHOICE)
+            if (score >= 90) return "A";
+            if (score >= 80) return "B";
+            if (score >= 70) return "C";
+            if (score >= 60) return "D";
+            if (score >= 50) return "F";
+            return "N";
+        }
     }
 
     // Getter
@@ -62,10 +74,14 @@ public class Score {
     // Score를 수정하는 함수
     public void setScore(int newScore) {
         this.score = newScore;
-        this.grade = calculateGrade(score);
+        this.grade = calculateGrade(score, this.subjectType);
     }
 
     public void setGrade(String grade) {
         this.grade = grade;
+    }
+
+    public void setSubjectType(String subjectType) {
+        this.subjectType = subjectType;
     }
 }
