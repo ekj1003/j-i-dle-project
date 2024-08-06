@@ -65,7 +65,7 @@ public class util {
 
     // 수강생의 ID로 학생 객체 리턴
     public static Student findStudent(String studentId) {
-        return CampManagementApplication.studentStore.stream()
+        return Store.studentStore.stream()
                 .filter(student -> student.getStudentId().equals(studentId))
                 .findFirst()
                 .orElse(null);
@@ -73,7 +73,7 @@ public class util {
 
     //수강생이 듣는 과목 ID로 과목 객체 리턴
     public static Subject findSubjectById(String subjectId) {
-        return CampManagementApplication.subjectStore.stream()
+        return Store.subjectStore.stream()
                 .filter(subject -> subject.getSubjectId().equals(subjectId))
                 .findFirst()
                 .orElse(null);
