@@ -1,33 +1,18 @@
 package camp;
 
+import camp.model.Store;
 import camp.model.Student;
 import camp.model.Subject;
-
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-import static camp.CampManagementApplication.studentStore;
-import static camp.CampManagementApplication.subjectStore;
-import static camp.CampManagementApplication.scoreStore;
-
 public class StudentManagement {
-
-
-    private static Scanner sc = new Scanner(System.in);
-
-
-    // 데이터 설정
-    public static void setData(List<Student> students, List<Subject> subjects) {
-        studentStore = students;
-        subjectStore = subjects;
-        scoreStore = CampManagementApplication.getScoreStore();
-    }
+    static Scanner sc = new Scanner(System.in);
 
     public static void createStudent() {
-
         System.out.println("\n수강생을 등록합니다...");
         System.out.print("수강생 이름 입력: ");
         String studentName = sc.nextLine();
@@ -42,8 +27,8 @@ public class StudentManagement {
 
         // 기능 구현 (필수 과목, 선택 과목)
         String mandatorysubject;
-
         String choicesubject;
+
         while (true) {
             System.out.println("필수과목을 입력해 주세요 : (, 띄어쓰기로 구분)");
             System.out.println("JAVA, 객체지향, Spring, JPA, MySQL");
@@ -57,9 +42,8 @@ public class StudentManagement {
                 System.out.println("입력된 과목이 충분하지 않습니다. 다시 입력해주세요.");
                 continue;
             }
-            List<String> mandatory = subjectList.stream()
-                    .filter(subjectName -> subjectStore.stream()
-                            .noneMatch(s -> s.getSubjectName().equalsIgnoreCase(subjectName)))
+            List<String> mandatory = subjectList.stream().
+                    filter(subjectName -> Store.subjectStore.stream().noneMatch(s -> s.getSubjectName().equalsIgnoreCase(subjectName)))
                     .collect(Collectors.toList());
 
             if (mandatory.isEmpty()) {
@@ -88,10 +72,7 @@ public class StudentManagement {
 
 
             // 과목 유효성 검사
-            List<String> choice = subjectList.stream()
-                    .filter(subjectName -> subjectStore.stream()
-                            .noneMatch(s -> s.getSubjectName().equalsIgnoreCase(subjectName)))
-                    .collect(Collectors.toList());
+            List<String> choice = subjectList.stream().filter(subjectName -> Store.subjectStore.stream().noneMatch(s -> s.getSubjectName().equalsIgnoreCase(subjectName))).collect(Collectors.toList());
 
             if (choice.isEmpty()) {
                 break;
@@ -102,36 +83,29 @@ public class StudentManagement {
         }
 
 
-        Student student = new Student(CampManagementApplication.generateStudentId(), studentName); // 수강생 인스턴스 생성 예시 코드
+        Student student = new Student(Store.sequence("INDEX_TYPE_STUDENT"), studentName); // 수강생 인스턴스 생성 예시 코드
 
         // 기능 구현
         List<String> subjectIds = new ArrayList<>();
         for (String subjectName : mandatorysubject.split(", ")) {
-            Subject subject = subjectStore.stream()
+            Store.subjectStore.stream()
                     .filter(s -> s.getSubjectName().equalsIgnoreCase(subjectName))
-                    .findFirst().orElse(null);
-
-            if (subject != null) {
-                subjectIds.add(subject.getSubjectId());
-            } else {
-
-            }
+                    .findFirst()
+                    .ifPresent(subject -> subjectIds.add(subject.getSubjectId()));
         }
 
         for (String subjectName : choicesubject.split(", ")) {
-            Subject subject = subjectStore.stream()
+            Store.subjectStore.stream()
                     .filter(s -> s.getSubjectName().equalsIgnoreCase(subjectName))
-                    .findFirst().orElse(null);
-            if (subject != null) {
-                subjectIds.add(subject.getSubjectId());
-            }
+                    .findFirst()
+                    .ifPresent(subject -> subjectIds.add(subject.getSubjectId()));
         }
 
         student.setStudentStatus(status);
         student.setSubjectList(subjectIds);
 
 
-        studentStore.add(student); // 학생 저장
+        Store.studentStore.add(student); // 학생 저장
 
 
         System.out.println("수강생 이름 : " + student.getStudentName());
@@ -145,17 +119,17 @@ public class StudentManagement {
     // 수강생 목록 조회
     public static void inquireStudent() {
         System.out.println("\n수강생 목록을 조회합니다...");
-        for (Student student : CampManagementApplication.getStudentStore()) {
-            System.out.printf("%s ",student.getStudentId());
-            System.out.printf("%s ",student.getStudentName());
-            System.out.printf("[상태:%s] ",student.getStatus());
+        for (Student student : Store.getStudentStore()) {
+            System.out.printf("%s ", student.getStudentId());
+            System.out.printf("%s ", student.getStudentName());
+            System.out.printf("[상태:%s] ", student.getStatus());
             System.out.print("[수강 과목 (필):");
             for (Subject subject : Util.listStudentSubjectByType(student, "MANDATORY")) {
-                System.out.printf("%s,",subject.getSubjectName());
+                System.out.printf("%s,", subject.getSubjectName());
             }
             System.out.print("(선):");
             for (Subject subject : Util.listStudentSubjectByType(student, "CHOICE")) {
-                System.out.printf("%s,",subject.getSubjectName());
+                System.out.printf("%s,", subject.getSubjectName());
             }
             System.out.print("] \n");
         }
@@ -170,15 +144,14 @@ public class StudentManagement {
         filterAndPrintStudentsByStatus("Red");
         System.out.println("\n상태별 수강생 목록 조회 성공!");
     }
+
     //상태별로 필터링해주는 메서드
-    public static void filterAndPrintStudentsByStatus (String status) {
-        List<Student> filteredStudents = CampManagementApplication.getStudentStore().stream()
-                .filter(student -> status.equals(student.getStatus()))
-                .toList();
+    public static void filterAndPrintStudentsByStatus(String status) {
+        List<Student> filteredStudents = Store.getStudentStore().stream().filter(student -> status.equals(student.getStatus())).toList();
 
         System.out.println("\n상태 : " + status + " 인 학생들");
         for (Student student : filteredStudents) {
-            System.out.println(student.getStudentId() + " " +  student.getStudentName());
+            System.out.println(student.getStudentId() + " " + student.getStudentName());
         }
     }
 
@@ -187,19 +160,22 @@ public class StudentManagement {
         String studentId = Util.getStudentId(); // 관리할 수강생 고유 번호
         System.out.print("수정할 수강생의 상태를 입력: ");
         String newStatus = sc.next();
-        for(Student student : studentStore) {
+        for (Student student : Store.studentStore) {
             if (student.getStudentId().equals(studentId)) student.setStudentStatus(newStatus);
         }
         System.out.println("수강생 상태 수정 성공!\n");
     }
-    public static void deleteStudent(String studentId) {
+
+    public static void deleteStudent() {
         System.out.println("\n수강생을 삭제합니다...");
 
+        String studentId = Util.getStudentId();
+
         // 학생 삭제
-        boolean studentRemoved = studentStore.removeIf(student -> student.getStudentId().equals(studentId));
+        boolean studentRemoved = Store.studentStore.removeIf(student -> student.getStudentId().equals(studentId));
 
         // 관련 점수 삭제
-        scoreStore.removeIf(score -> score.getStudentId().equals(studentId));
+        Store.scoreStore.removeIf(score -> score.getStudentId().equals(studentId));
 
         if (studentRemoved) {
             System.out.println("수강생 삭제 완료");
