@@ -2,7 +2,6 @@ package camp;
 
 import camp.model.Student;
 import camp.model.Subject;
-import camp.model.Score;
 import camp.CampManagementApplication;
 import camp.Util;
 
@@ -10,12 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import static camp.CampManagementApplication.studentStore;
+import static camp.CampManagementApplication.subjectStore;
+
 
 public class StudentManagement {
 
-    private static List<Student> studentStore;
-    private static List<Subject> subjectStore;
-    private static List<Score> scoreStore;
 
     private static Scanner sc = new Scanner(System.in);
 
@@ -24,7 +23,7 @@ public class StudentManagement {
     public static void setData(List<Student> students, List<Subject> subjects) {
         studentStore = students;
         subjectStore = subjects;
-        scoreStore = CampManagementApplication.getScoreStore();
+
     }
 
     public static void createStudent() {
@@ -152,29 +151,11 @@ public class StudentManagement {
         String studentId = Util.getStudentId(); // 관리할 수강생 고유 번호
         System.out.print("수정할 수강생의 상태를 입력: ");
         String newStatus = sc.next();
-        for(Student student : CampManagementApplication.studentStore) {
+        for(Student student : studentStore) {
             if (student.getStudentId().equals(studentId)) student.setStudentStatus(newStatus);
         }
         System.out.println("수강생 상태 수정 성공!\n");
     }
-
-    // 수강생 삭제
-    public static void deleteStudent(String studentId) {
-        System.out.println("\n수강생을 삭제합니다...");
-
-        // 학생 삭제
-        boolean studentRemoved = studentStore.removeIf(student -> student.getStudentId().equals(studentId));
-
-        // 관련 점수 삭제
-        scoreStore.removeIf(score -> score.getStudentId().equals(studentId));
-
-        if (studentRemoved) {
-            System.out.println("수강생 삭제 완료");
-        } else {
-            System.out.println("해당 ID를 가진 수강생이 없습니다.");
-        }
-    }
-
 }
 
 
