@@ -12,6 +12,8 @@ public class StudentManagement {
     private static List<Student> studentStore;
     private static List<Subject> subjectStore;
 
+    private static Scanner sc = new Scanner(System.in);
+
 
     // 데이터 설정
     public static void setData(List<Student> students, List<Subject> subjects) {
@@ -21,7 +23,6 @@ public class StudentManagement {
     }
 
     public static void createStudent() {
-        Scanner sc = new Scanner(System.in);
 
         System.out.println("\n수강생을 등록합니다...");
         System.out.print("수강생 이름 입력: ");
@@ -139,6 +140,17 @@ public class StudentManagement {
         for (Student student : filteredStudents) {
             System.out.println(student.getStudentId() + " " +  student.getStudentName());
         }
+    }
+
+    // 수강생 상태 수정
+    public static void updateStudentStatus() {
+        String studentId = Util.getStudentId(); // 관리할 수강생 고유 번호
+        System.out.print("수정할 수강생의 상태를 입력: ");
+        String newStatus = sc.next();
+        for(Student student : studentStore) {
+            if (student.getStudentId().equals(studentId)) student.setStudentStatus(newStatus);
+        }
+        System.out.println("수강생 상태 수정 성공!\n");
     }
 }
 
