@@ -2,10 +2,13 @@ package camp;
 
 import camp.model.Student;
 import camp.model.Subject;
+import camp.CampManagementApplication;
+import camp.Util;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
 
 public class StudentManagement {
 
@@ -147,7 +150,7 @@ public class StudentManagement {
         String studentId = Util.getStudentId(); // 관리할 수강생 고유 번호
         System.out.print("수정할 수강생의 상태를 입력: ");
         String newStatus = sc.next();
-        for(Student student : studentStore) {
+        for(Student student : CampManagementApplication.studentStore) {
             if (student.getStudentId().equals(studentId)) student.setStudentStatus(newStatus);
         }
         System.out.println("수강생 상태 수정 성공!\n");
