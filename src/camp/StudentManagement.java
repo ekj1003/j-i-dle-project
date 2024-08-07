@@ -15,8 +15,8 @@ public class StudentManagement {
         for (Student student : CampManagementApplication.getStudentStore()) {
             System.out.printf("%s ",student.getStudentId());
             System.out.printf("%s ",student.getStudentName());
-            System.out.printf("[상태:%s ]",student.getStatus());
-            System.out.print(" [수강 과목 (필):");
+            System.out.printf("[상태:%s] ",student.getStatus());
+            System.out.print("[수강 과목 (필):");
             for (Subject subject : Util.listStudentSubjectByType(student, "MANDATORY")) {
                 System.out.printf("%s,",subject.getSubjectName());
             }
@@ -24,7 +24,7 @@ public class StudentManagement {
             for (Subject subject : Util.listStudentSubjectByType(student, "CHOICE")) {
                 System.out.printf("%s,",subject.getSubjectName());
             }
-            System.out.print("]\n");
+            System.out.print("] \n");
         }
         System.out.println("\n수강생 목록 조회 성공!");
     }
