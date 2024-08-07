@@ -7,6 +7,7 @@ import camp.model.Subject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import static camp.CampManagementApplication.studentStore;
 import static camp.CampManagementApplication.subjectStore;
@@ -29,44 +30,77 @@ public class StudentManagement {
 
         System.out.println("\n수강생을 등록합니다...");
         System.out.print("수강생 이름 입력: ");
-        String studentName = sc.next().trim();
+        String studentName = sc.nextLine();
 
 
         System.out.println("좋음 : Green");
         System.out.println("중간 : Yellow");
         System.out.println("나쁨 : Red");
         System.out.println("수강생의 상태를 입력해주세요 : ");
-        String status = sc.next().trim();
+        String status = sc.nextLine();
 
-        sc.nextLine(); //버퍼 지우기
 
         // 기능 구현 (필수 과목, 선택 과목)
         String mandatorysubject;
-        while (true) {
-            System.out.println("필수과목 최소 3개 이상 입력해주세요(,띄어쓰기로 구분)");
-            System.out.println("Java, 객체지향, Spring, JPA, MySQL");
-            System.out.print("필수과목 입력 : ");
-            mandatorysubject = sc.nextLine().trim();
-            // 간단한 유효성 검사 (최소 3개 입력 여부 확인)
-            if (mandatorysubject.split(", ").length >= 3) {
-                break;
-            } else {
-                System.out.println("필수 과목은 최소 3개 이상 입력해야 합니다. 다시 입력해주세요.");
-            }
-        }
+
         String choicesubject;
         while (true) {
-            System.out.println("선택과목 최소 2개 이상 입력해주세요(,띄어쓰기로 구분)");
-            System.out.println("디자인 패턴, Spring Security, Redis, MongoDB");
-            System.out.print("선택과목 입력 : ");
-            choicesubject = sc.nextLine().trim();
-            // 간단한 유효성 검사 (최소 2개 입력 여부 확인)
-            if (choicesubject.split(", ").length >= 2) {
+            System.out.println("필수과목을 입력해 주세요 : (, 띄어쓰기로 구분)");
+            System.out.println("JAVA, 객체지향, Spring, JPA, MySQL");
+            System.out.print("입력: ");
+
+            mandatorysubject = sc.nextLine().trim();
+
+            // 유효성 검사: 최소 과목 개수 확인
+            List<String> subjectList = List.of(mandatorysubject.split(", "));
+            if (subjectList.size() < 3) {
+                System.out.println("입력된 과목이 충분하지 않습니다. 다시 입력해주세요.");
+                continue;
+            }
+            List<String> mandatory = subjectList.stream()
+                    .filter(subjectName -> subjectStore.stream()
+                            .noneMatch(s -> s.getSubjectName().equalsIgnoreCase(subjectName)))
+                    .collect(Collectors.toList());
+
+            if (mandatory.isEmpty()) {
                 break;
             } else {
-                System.out.println("선택 과목은 최소 2개 이상 입력해야 합니다. 다시 입력해주세요.");
+                System.out.println("다음 과목을 찾을 수 없습니다: " + String.join(", ", mandatory));
+                System.out.println("올바른 과목을 입력해주세요.");
+
             }
         }
+
+        while (true) {
+
+            System.out.println("선택과목을 입력해 주세요 : (, 띄어쓰기로 구분)");
+            System.out.println("디자인 패턴, Spring Security, Redis, MongoDB");
+            System.out.print("입력: ");
+
+            choicesubject = sc.nextLine().trim();
+
+            // 유효성 검사: 최소 과목 개수 확인
+            List<String> subjectList = List.of(choicesubject.split(", "));
+            if (subjectList.size() < 2) {
+                System.out.println("입력된 과목이 충분하지 않습니다. 다시 입력해주세요.");
+                continue;
+            }
+
+
+            // 과목 유효성 검사
+            List<String> choice = subjectList.stream()
+                    .filter(subjectName -> subjectStore.stream()
+                            .noneMatch(s -> s.getSubjectName().equalsIgnoreCase(subjectName)))
+                    .collect(Collectors.toList());
+
+            if (choice.isEmpty()) {
+                break;
+            } else {
+                System.out.println("다음 과목을 찾을 수 없습니다: " + String.join(", ", choice));
+                System.out.println("올바른 과목을 입력해주세요.");
+            }
+        }
+
 
         Student student = new Student(CampManagementApplication.generateStudentId(), studentName); // 수강생 인스턴스 생성 예시 코드
 
@@ -76,8 +110,11 @@ public class StudentManagement {
             Subject subject = subjectStore.stream()
                     .filter(s -> s.getSubjectName().equalsIgnoreCase(subjectName))
                     .findFirst().orElse(null);
+
             if (subject != null) {
                 subjectIds.add(subject.getSubjectId());
+            } else {
+
             }
         }
 
