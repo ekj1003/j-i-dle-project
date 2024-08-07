@@ -2,9 +2,7 @@ package camp;
 
 import camp.model.Student;
 import camp.model.Subject;
-import camp.model.Score;
-import camp.CampManagementApplication;
-import camp.Util;
+
 
 import java.util.ArrayList;
 import java.util.List;
