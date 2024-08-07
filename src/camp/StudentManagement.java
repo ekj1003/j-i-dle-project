@@ -9,11 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import static camp.CampManagementApplication.studentStore;
+import static camp.CampManagementApplication.subjectStore;
+
 
 public class StudentManagement {
 
-    private static List<Student> studentStore;
-    private static List<Subject> subjectStore;
 
     private static Scanner sc = new Scanner(System.in);
 
@@ -150,7 +151,7 @@ public class StudentManagement {
         String studentId = Util.getStudentId(); // 관리할 수강생 고유 번호
         System.out.print("수정할 수강생의 상태를 입력: ");
         String newStatus = sc.next();
-        for(Student student : CampManagementApplication.studentStore) {
+        for(Student student : studentStore) {
             if (student.getStudentId().equals(studentId)) student.setStudentStatus(newStatus);
         }
         System.out.println("수강생 상태 수정 성공!\n");
