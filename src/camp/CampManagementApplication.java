@@ -57,9 +57,6 @@ public class CampManagementApplication {
 
     // 스캐너
     private static Scanner sc = new Scanner(System.in);
-    private static ScoreRegistrar scoreRegistrar = new ScoreRegistrar(sc);
-
-
 
     public static void main(String[] args) {
         setInitData();
@@ -256,15 +253,15 @@ public class CampManagementApplication {
     // 수강생의 과목별 시험 회차 및 점수 등록
     private static void createScore() {
         String studentId = Util.getStudentId(); // 관리할 수강생 고유 번호
-        // 점수 등록 위임
-        scoreRegistrar.createScore(studentId, subjectStore, scoreStore);
+        ScoreManagement.createScore(studentId);
     }
+
 
     // 수강생 삭제
     private static void deleteStudent() {
         System.out.print("삭제할 수강생의 ID를 입력하세요: ");
         String studentId = sc.next();
-        DeleteStudent deleteStudentManager = new DeleteStudent(studentStore, scoreStore);
-        deleteStudentManager.deleteStudent(studentId);
+        StudentManagement.deleteStudent(studentId);
     }
+
 }
