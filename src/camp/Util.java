@@ -16,14 +16,14 @@ public class Util {
 
     // 수강생의 ID로 학생 객체 리턴
     public static Student findStudent(String studentId) {
-        return CampManagementApplication.getStudentStore().stream()
+        return Store.getStudentStore().stream()
                 .filter(student -> student.getStudentId().equals(studentId))
                 .findFirst().orElse(null);
     }
 
     //수강생이 듣는 과목ID로 과목 객체 리턴
     public static Subject findSubjectById(String subjectId) {
-        return CampManagementApplication.getSubjectStore().stream()
+        return Store.getSubjectStore().stream()
                 .filter(subject -> subject.getSubjectId().equals(subjectId)).findFirst().orElse(null);
     }
 
@@ -40,20 +40,20 @@ public class Util {
 
     //수강생의 특정 과목 점수 리스트 반환
     public static List<Score> getScoreListBySubjectId(String studentId, String subjectId) {
-        return new ArrayList<>(CampManagementApplication.getScoreStore().stream()
+        return new ArrayList<>(Store.getScoreStore().stream()
                 .filter(s -> s.getStudentId().equals(studentId) && s.getSubjectId().equals(subjectId))
                 .toList());
     }
 
     // 상태를 입력받아 해당 상태의 수강생 리스트 반환
     public static List<Student> findStudentByStatus(String status) {
-        return new ArrayList<>(CampManagementApplication.getStudentStore().stream().
+        return new ArrayList<>(Store.getStudentStore().stream().
                 filter(s -> s.getStatus().equals(status)).toList());
     }
 
     //수강생의 해당 과목 평균 등급 리턴
     public static char getAvgGradeBySubject(String studentId, String subjectId, String subjectTypeLabel) {
-        List<Score> filteredScore = CampManagementApplication.getScoreStore().stream()
+        List<Score> filteredScore = Store.getScoreStore().stream()
                 .filter(score -> studentId.equals(score.getStudentId()) && subjectId.equals(score.getSubjectId()))
                 .toList();
 

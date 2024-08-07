@@ -1,16 +1,15 @@
 package camp;
 
 import camp.model.Score;
+import camp.model.Store;
 import camp.model.Student;
 import camp.model.Subject;
-import camp.CampManagementApplication;
-import camp.Util;
 
 import java.util.*;
 
 public class ScoreManagement {
 
-    private static Scanner sc = new Scanner(System.in);
+    private static final Scanner sc = new Scanner(System.in);
 
     // 수강생의 과목별 회차 점수 수정
     public static void updateRoundScoreBySubject() {
@@ -25,7 +24,7 @@ public class ScoreManagement {
 
         System.out.println("시험 점수를 수정합니다...");
         // 기능 구현
-        for(Score score : CampManagementApplication.scoreStore) {
+        for(Score score : Store.scoreStore) {
             if(score.getStudentId().equals(studentId) && score.getRound() == round && score.getSubjectId().equals(subjectId)) {
                 score.setScore(newScore);
             }
@@ -57,7 +56,6 @@ public class ScoreManagement {
     // 수강생의 특정 과목 회차별 등급 조회
     public static void inquireRoundGradeBySubject() {
         String studentId = Util.getStudentId(); // 관리할 수강생 고유 번호
-        Student student = Util.findStudent(studentId);
 
         // 조회할 과목 ID 입력
         System.out.print("조회할 과목의 번호를 입력하시오...");
@@ -88,10 +86,10 @@ public class ScoreManagement {
         System.out.println("====================================");
 
         for (Student student : students) {
-            List<Subject> subjectList = Util.listStudentSubjectByType(student, CampManagementApplication.SUBJECT_TYPE_MANDATORY);
+            List<Subject> subjectList = Util.listStudentSubjectByType(student, Store.SUBJECT_TYPE_MANDATORY);
             System.out.println("\n" + student.getStudentName() + " 수강생 필수 과목 평균 등급");
             for (Subject subject : subjectList) {
-                char avgGrade = Util.getAvgGradeBySubject(student.getStudentId(), subject.getSubjectId(), CampManagementApplication.SUBJECT_TYPE_MANDATORY);
+                char avgGrade = Util.getAvgGradeBySubject(student.getStudentId(), subject.getSubjectId(), Store.SUBJECT_TYPE_MANDATORY);
                 System.out.println(subject.getSubjectName() + " 과목 평균 등급 = " + avgGrade);
             }
         }
@@ -99,8 +97,10 @@ public class ScoreManagement {
     }
 
     // 수강생의 과목별 시험 회차 및 점수 등록
-    public static void createScore(String studentId) {
+    public static void createScore() {
         System.out.println("시험 점수를 등록합니다...");
+
+        String studentId = Util.getStudentId(); // 관리할 수강생 고유 번호
 
         // 과목 입력
         String subjectId;
@@ -131,7 +131,7 @@ public class ScoreManagement {
         }
 
         // 과목 유형 찾기
-        Subject subject = findSubjectById(subjectId);
+        Subject subject = Util.findSubjectById(subjectId);
         if (subject == null) {
             System.out.println("유효하지 않은 과목입니다.");
             return;
@@ -140,17 +140,10 @@ public class ScoreManagement {
 
         // 점수 등록
         Score scoreEntry = new Score(studentId, subjectId, round, score, subjectType);
-        CampManagementApplication.scoreStore.add(scoreEntry);
+        Store.scoreStore.add(scoreEntry);
         System.out.println("\n점수 등록 성공!");
     }
 
-    // 수강생의 과목ID로 과목 객체 리턴
-    private static Subject findSubjectById(String subjectId) {
-        return CampManagementApplication.subjectStore.stream()
-                .filter(subject -> subject.getSubjectId().equals(subjectId))
-                .findFirst()
-                .orElse(null);
-    }
 }
 
 
