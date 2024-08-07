@@ -18,7 +18,7 @@ public class ScoreManagement {
     private static Scanner sc = new Scanner(System.in);
 
     // 수강생의 과목별 회차 점수 수정
-    private static void updateRoundScoreBySubject() {
+    public static void updateRoundScoreBySubject() {
         String studentId = Util.getStudentId(); // 관리할 수강생 고유 번호
         // 기능 구현 (수정할 과목 및 회차, 점수)
         System.out.print("수정할 과목 입력: ");
@@ -44,28 +44,11 @@ public class ScoreManagement {
         System.out.println("\n점수 수정 성공!");
     }
 
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     // 수강생의 과목별 평균 등급 조회
     public static void inquireAVGGradeBySubject() {
         String input = Util.getStudentId();
         Student student = Util.findStudent(input);
-        System.out.println( student.getStudentName()+"님의 과목별 평균 등급은 다음과 같습니다..");
+                System.out.println( student.getStudentName()+"님의 과목별 평균 등급은 다음과 같습니다..");
         printAVGGradebySubject(student,"MANDATORY");
         printAVGGradebySubject(student,"CHOICE");
     }
@@ -81,4 +64,6 @@ public class ScoreManagement {
             System.out.printf("[ %s %s : %c ]\n",simpleSubjectType,sName,grade);
         }
     }
+
+
 }
