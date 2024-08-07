@@ -5,9 +5,7 @@ import camp.model.Student;
 import camp.model.Subject;
 import camp.Util;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 
 public class ScoreManagement {
 
@@ -48,7 +46,7 @@ public class ScoreManagement {
     public static void inquireAVGGradeBySubject() {
         String input = Util.getStudentId();
         Student student = Util.findStudent(input);
-                System.out.println( student.getStudentName()+"님의 과목별 평균 등급은 다음과 같습니다..");
+        System.out.println( student.getStudentName()+"님의 과목별 평균 등급은 다음과 같습니다..");
         printAVGGradebySubject(student,"MANDATORY");
         printAVGGradebySubject(student,"CHOICE");
     }
@@ -65,5 +63,47 @@ public class ScoreManagement {
         }
     }
 
+    // 수강생의 특정 과목 회차별 등급 조회
+    public static void inquireRoundGradeBySubject() {
+        String studentId = Util.getStudentId(); // 관리할 수강생 고유 번호
+        Student student = Util.findStudent(studentId);
 
+        // 조회할 과목 ID 입력
+        System.out.print("조회할 과목의 번호를 입력하시오...");
+        String subjectId = sc.next();
+        Subject subject = Util.findSubjectById(subjectId);
+
+        System.out.println(subject.getSubjectName() + " 과목 회차별 등급을 조회합니다...");
+        System.out.println("====================================");
+
+        List<Score> scoreList = Util.getScoreListBySubjectId(studentId, subjectId);
+        scoreList.sort(Comparator.comparingInt(Score::getRound)); // 회차 오름차순으로 정렬
+
+        for (Score score : scoreList) {
+            System.out.println("회차 = " + score.getRound());
+            System.out.println("등급 = " + score.getGrade() + "\n");
+        }
+        System.out.println("등급 조회 성공!");
+    }
+
+    // 특정 상태 수강생들의 필수 과목 평균 등급 조회
+    public static void inquireAvgGradeByMandatorySubject() {
+
+        System.out.print("조회할 수강생의 상태를 입력하시오...");
+        String status = sc.next();
+        List<Student> students = Util.findStudentByStatus(status);
+
+        System.out.println(status + " 상태 수강생들의 필수 과목 평균 등급을 조회합니다...");
+        System.out.println("====================================");
+
+        for (Student student : students) {
+            List<Subject> subjectList = Util.listStudentSubjectByType(student, CampManagementApplication.SUBJECT_TYPE_MANDATORY);
+            System.out.println("\n" + student.getStudentName() + " 수강생 필수 과목 평균 등급");
+            for (Subject subject : subjectList) {
+                char avgGrade = Util.getAvgGradeBySubject(student.getStudentId(), subject.getSubjectId(), CampManagementApplication.SUBJECT_TYPE_MANDATORY);
+                System.out.println(subject.getSubjectName() + " 과목 평균 등급 = " + avgGrade);
+            }
+        }
+        System.out.println("\n등급 조회 성공!");
+    }
 }

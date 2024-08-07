@@ -44,8 +44,8 @@ public class CampManagementApplication {
     }
 
     // 과목 타입
-    private static final String SUBJECT_TYPE_MANDATORY = "MANDATORY";
-    private static final String SUBJECT_TYPE_CHOICE = "CHOICE";
+    public static final String SUBJECT_TYPE_MANDATORY = "MANDATORY";
+    public static final String SUBJECT_TYPE_CHOICE = "CHOICE";
 
     // index 관리 필드
     private static int studentIndex;
@@ -241,9 +241,9 @@ public class CampManagementApplication {
             switch (input) {
                 case 1 -> createScore(); // 수강생의 과목별 시험 회차 및 점수 등록
                 case 2 -> ScoreManagement.updateRoundScoreBySubject(); // 수강생의 과목별 회차 점수 수정
-                case 3 -> inquireRoundGradeBySubject(); // 수강생의 특정 과목 회차별 등급 조회
+                case 3 -> ScoreManagement.inquireRoundGradeBySubject(); // 수강생의 특정 과목 회차별 등급 조회
                 case 4 -> ScoreManagement.inquireAVGGradeBySubject(); //수강생의 과목별 평균 등급 조회
-                case 5 -> inquireAvgGradeByMandatorySubject(); // 특정 상태 수강생들의 필수 과목 평균 등급 조회
+                case 5 -> ScoreManagement.inquireAvgGradeByMandatorySubject(); // 특정 상태 수강생들의 필수 과목 평균 등급 조회
                 case 6 -> flag = false; // 메인 화면 이동
                 default -> {
                     System.out.println("잘못된 입력입니다.\n메인 화면 이동...");
@@ -258,78 +258,6 @@ public class CampManagementApplication {
         String studentId = Util.getStudentId(); // 관리할 수강생 고유 번호
         // 점수 등록 위임
         scoreRegistrar.createScore(studentId, subjectStore, scoreStore);
-    }
-
-
-    // 수강생의 특정 과목 회차별 등급 조회
-    private static void inquireRoundGradeBySubject() {
-        String studentId = Util.getStudentId(); // 관리할 수강생 고유 번호
-
-        // 기능 구현 (조회할 특정 과목)
-        System.out.print("조회할 과목의 번호를 입력하시오...");
-        String subjectId = sc.next();
-        Subject subject = subjectStore.stream().filter(s -> s.getSubjectId().equals(subjectId)).findFirst().get();
-
-        System.out.println(subject.getSubjectName() + " 과목 회차별 등급을 조회합니다...");
-        System.out.println("====================================");
-
-        List<Score> scoreList = new ArrayList<>(scoreStore.stream()
-                .filter(s -> s.getStudentId().equals(studentId) && s.getSubjectId().equals(subjectId))
-                .toList());
-
-        scoreList.sort(Comparator.comparingInt(Score::getRound));
-
-        for (Score score : scoreList) {
-            System.out.println("회차 = " + score.getRound());
-            System.out.println("등급 = " + score.getGrade());
-            System.out.println("====================================");
-        }
-        // 기능 구현
-        System.out.println("\n등급 조회 성공!");
-    }
-
-    // 특정 상태 수강생들의 필수 과목 평균 등급 조회
-    private static void inquireAvgGradeByMandatorySubject() {
-
-        System.out.print("조회할 수강생의 상태를 입력하시오...");
-        String status = sc.next();
-        List<Student> students = studentStore.stream().
-                filter(s -> s.getStatus().equals(status)).toList();
-
-        System.out.println(status + " 상태 수강생들의 필수 과목 평균 등급을 조회합니다...");
-        System.out.println("====================================");
-
-        for (Student student : students) {
-            List<String> subjectList = student.getSubjectList();
-
-            for (String subjectId : subjectList) {
-                Subject subject = subjectStore.stream()
-                        .filter(s -> s.getSubjectId().equals(subjectId)).findFirst().orElse(null);
-
-                if (subject == null) continue;
-
-                if (subject.getSubjectType().equals(SUBJECT_TYPE_MANDATORY)) {
-                    List<Integer> scoreList = scoreStore.stream().filter(s -> s.getStudentId().equals(student.getStudentId()) &&
-                            s.getSubjectId().equals(subjectId)).map(Score::getScore).toList();
-
-                    char avgGrade = getAvgGrade(scoreList);
-                    System.out.println(student.getStudentName() + " 수강생 " + subject.getSubjectName() + " 과목 평균 등급 = " + avgGrade);
-                }
-            }
-            System.out.println("====================================");
-        }
-    }
-
-    // 점수 리스트를 받아 평균 등급을 반환
-    private static char getAvgGrade(List<Integer> scoreList) {
-        int scoreSum = scoreList.stream().reduce(0, Integer::sum);
-        int avgSum;
-        if (scoreList.isEmpty()) {
-            avgSum = 0;
-        } else {
-            avgSum = scoreSum / scoreList.size();
-        }
-        return Util.getGrade(avgSum, SUBJECT_TYPE_MANDATORY);
     }
 
     // 수강생 삭제

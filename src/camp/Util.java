@@ -38,6 +38,19 @@ public class Util {
                 .filter(s -> type.equals(s.getSubjectType())).toList();
     }
 
+    //수강생의 특정 과목 점수 리스트 반환
+    public static List<Score> getScoreListBySubjectId(String studentId, String subjectId) {
+        return new ArrayList<>(CampManagementApplication.getScoreStore().stream()
+                .filter(s -> s.getStudentId().equals(studentId) && s.getSubjectId().equals(subjectId))
+                .toList());
+    }
+
+    // 상태를 입력받아 해당 상태의 수강생 리스트 반환
+    public static List<Student> findStudentByStatus(String status) {
+        return new ArrayList<>(CampManagementApplication.getStudentStore().stream().
+                filter(s -> s.getStatus().equals(status)).toList());
+    }
+
     //수강생의 해당 과목 평균 등급 리턴
     public static char getAvgGradeBySubject(String studentId, String subjectId, String subjectTypeLabel) {
         List<Score> filteredScore = CampManagementApplication.getScoreStore().stream()
