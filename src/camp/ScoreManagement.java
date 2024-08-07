@@ -3,6 +3,7 @@ package camp;
 import camp.model.Score;
 import camp.model.Student;
 import camp.model.Subject;
+import camp.CampManagementApplication;
 import camp.Util;
 
 import java.util.List;
@@ -10,10 +11,6 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class ScoreManagement {
-
-    private static List<Student> studentStore;
-    public static List<Subject> subjectStore;
-    public static List<Score> scoreStore;
 
     private static Scanner sc = new Scanner(System.in);
 
@@ -30,13 +27,13 @@ public class ScoreManagement {
 
         String subjectId="";
 
-        for(Subject subject : subjectStore) {
+        for(Subject subject : CampManagementApplication.subjectStore) {
             if(subject.getSubjectName().equals(subjectName)) subjectId = subject.getSubjectId();
         }
 
         System.out.println("시험 점수를 수정합니다...");
         // 기능 구현
-        for(Score score : scoreStore) {
+        for(Score score : CampManagementApplication.scoreStore) {
             if(score.getStudentId().equals(studentId) && score.getRound() == round && score.getSubjectId().equals(subjectId)) {
                 score.setScore(newScore);
             }
